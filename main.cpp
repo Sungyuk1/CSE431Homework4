@@ -16,9 +16,24 @@ int main()
     unsigned long long starting_num;
     unsigned long long ending_num;
 
+    vector<vector<unsigned long long>> inputs;
+
+    for (int i = 0; i<num; i++) {
+        cin>>starting_num>>ending_num;
+        vector<unsigned long long> input;
+        input.push_back(starting_num);
+        input.push_back(ending_num);
+        inputs.push_back(input);
+    }
+
     for (int i = 0; i<num; i++) {
 
-        cin>>starting_num>>ending_num;
+        if(i == 63){
+            int debg = 0;
+        }
+        //cin>>starting_num>>ending_num;
+        starting_num = inputs[i][0];
+        ending_num = inputs[i][1];
 
         if(starting_num == ending_num){
             cout<<"0"<<endl;
@@ -26,23 +41,20 @@ int main()
             //vector<unsigned long long> power_2_stack;
 
             unsigned long long current_power_2 = 1;
-            //power_2_stack.push_back(current_power_2);
 
-            //int count = 0;
-            while(current_power_2 <= starting_num){
-                //current_power_2 = pow(2,count);
-                current_power_2 = current_power_2 <<1;
-
-                //if(current_power_2 <= starting_num){
-                  //  power_2_stack.push_back(current_power_2);
-                    //count++;
-                //}
+            int overflow2 = false;
+            while(!overflow2 && current_power_2 <= starting_num){
+                if(ULLONG_MAX - current_power_2 > current_power_2){
+                    current_power_2 = current_power_2 <<1;
+                }else{
+                    overflow2 = true;
+                }
             }
-            current_power_2 = current_power_2 >> 1;
+            if(!overflow2){
+                current_power_2 = current_power_2 >> 1;
+            }
             int step_count = 0;
             while(starting_num > ending_num){
-                //unsigned long long value = power_2_stack[power_2_stack.size()-1];
-                //power_2_stack.pop_back();
                 //be careful of overflow here if u choose to use unsigned
                 bool underflowcheck = (ULLONG_MAX - current_power_2 >= ULLONG_MAX - starting_num) ;// `a - x` would overflow
                 if(underflowcheck && starting_num - current_power_2 >= ending_num){
